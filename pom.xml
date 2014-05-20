@@ -37,9 +37,9 @@
    
   <distributionManagement>
     <repository>
-      <id>github.release.repo</id>
+      <id>datys-thirdparty</id>
       <name>Release Repository</name>
-      <url>file:///dev/bulldog-repo/repo/releases</url>
+      <url>https://nexus.datys.cu/content/repositories/datys-3rd-party-mvn/</url>
     </repository>
     <snapshotRepository>
       <id>github.snapshot.repo</id>
