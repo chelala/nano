@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 
 import com.leansoft.nano.annotation.Element;
 import com.leansoft.nano.annotation.RootElement;
+import com.leansoft.nano.annotation.SeeAlso;
 import com.leansoft.nano.annotation.Type;
 import com.leansoft.nano.another.Ccc;
 import com.leansoft.nano.another.SingleTypeType;
@@ -24,6 +25,7 @@ public class ElementInheritanceTest extends TestCase {
         
     }
 
+    @SeeAlso(value={BbbJunior.class})
     public static class Bbb {
         @Element
         public String bbbData;
