@@ -2,18 +2,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.leansoft</groupId>
-  <artifactId>nano</artifactId>
+  <artifactId>nano-ns</artifactId>
   <version>0.7.0</version>
   <packaging>jar</packaging>
 
-  <name>nano</name>
+  <name>nano-ns</name>
   <url>https://github.com/bulldog2011/nano</url>
   
   <description>A light web service client framework targeting Android platform.</description>
   <scm>
-        <connection>scm:git:git@github.com:bulldog2011/nano.git</connection>
-        <developerConnection>scm:git:git@github.com:bulldog2011/nano.git</developerConnection>
-        <url>https://github.com/bulldog2011/nano</url>
+        <connection>scm:git:git@github.com:chelala/nano.git</connection>
+        <developerConnection>scm:git:git@github.com:chelala/nano.git</developerConnection>
+        <url>https://github.com/chelala/nano</url>
     <tag>nano-0.7.0</tag>
   </scm>
     <licenses>
@@ -29,6 +29,24 @@
             <name>bulldog</name>
             <email>51startup@sina.com</email>
             <url>https://github.com/bulldog2011</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>chelala</id>
+            <name>chelala</name>
+            <email>chelala@gmail.com</email>
+            <url>https://github.com/chelala</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>ypupo2002</id>
+            <name>ypupo2002@gmail.com</name>
+            <email>chelala@gmail.com</email>
+            <url>https://github.com/ypupo2002</url>
             <roles>
                 <role>developer</role>
             </roles>
@@ -65,6 +83,11 @@
       <version>2.2.1</version>
       <scope>provided</scope>
     </dependency>
+         <dependency>
+         <groupId>org.reflections</groupId>
+         <artifactId>reflections</artifactId>
+         <version>0.9.9-RC1</version>
+     </dependency>
   </dependencies>
   
   <build>

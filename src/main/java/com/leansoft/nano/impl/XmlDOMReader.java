@@ -8,13 +8,16 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.reflections.Reflections;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -22,6 +25,7 @@ import org.w3c.dom.NodeList;
 
 import com.leansoft.nano.Format;
 import com.leansoft.nano.IReader;
+import com.leansoft.nano.annotation.Type;
 import com.leansoft.nano.annotation.schema.AnyElementSchema;
 import com.leansoft.nano.annotation.schema.AttributeSchema;
 import com.leansoft.nano.annotation.schema.ElementSchema;
@@ -215,11 +219,14 @@ public class XmlDOMReader implements IReader {
 					String localName = node.getLocalName();
 					
 					Object schemaObj = xml2SchemaMapping.get(localName);
+					//Check if attr type present
 					
 					if (schemaObj != null && schemaObj instanceof ElementSchema) { // found match element
 						ElementSchema es = (ElementSchema)schemaObj;
 						Field field = es.getField();
 						Class<?> fieldType = field.getType();
+						
+						Class<?> instanceElementClass = processInstanceType(node, fieldType);
 						
 						if (es.isList()) { // collection
 							@SuppressWarnings("unchecked")
@@ -257,9 +264,15 @@ public class XmlDOMReader implements IReader {
 									}
 								}
 							} else {
-								Object newObj = this.buildObjectFromType(fieldType);
-								this.read(newObj, childElement);
-								field.set(obj, newObj);
+							        if (null != instanceElementClass) {
+	                                                                Object newObj = this.buildObjectFromType(instanceElementClass);
+	                                                                this.read(newObj, childElement);
+	                                                                field.set(obj, newObj);
+                                                                } else {
+                                                                    Object newObj = this.buildObjectFromType(fieldType);
+                                                                    this.read(newObj, childElement);
+                                                                    field.set(obj, newObj);
+                                                                }
 							}
 						}
 					} else if (anyChildElements != null) {
@@ -270,6 +283,23 @@ public class XmlDOMReader implements IReader {
 			}
 		}
 	}
+
+    private Class<?> processInstanceType(Node node, Class<?> fieldType) {
+        final Node xsiTypeAttr = node.getAttributes().getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+        if (null != xsiTypeAttr) {
+            
+            //Get all types with annotation "Type"
+            final Reflections reflections = new Reflections( fieldType.getPackage().getName() );
+            final Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(Type.class);
+            final Set<?> subTypesOf = reflections.getSubTypesOf(fieldType);
+            for (Class<?> class1 : typesAnnotatedWith) {
+                    if (subTypesOf.contains(class1)) {
+                        return class1;
+                    }
+                }
+        }
+        return null;
+    }
 
 	protected void readAnyElement(Object obj, List<Element> anyElements) throws Exception {
 		MappingSchema ms = MappingSchema.fromObject(obj);

@@ -56,8 +56,7 @@ public class ElementInheritanceTest extends TestCase {
         Aaa target = xmlReader.read(Aaa.class, str1);
         String str2 = xmlWriter.write(target);
 
-        assertEquals(true, true);
-        // TODO: Fix reader assertEquals(str2, str1);
+        assertEquals(str2, str1);
     }
 
 }
