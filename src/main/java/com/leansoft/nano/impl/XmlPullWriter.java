@@ -323,6 +323,13 @@ public class XmlPullWriter implements IWriter {
         // object
         final MappingSchema typeMs = MappingSchema.fromClass(type);
         final String typeNamespace = typeMs.getRootElementSchema().getNamespace();
+        
+        // set namespace if annotation "Element" is set and has "namespace" != ""
+        if (es.getField().isAnnotationPresent(com.leansoft.nano.annotation.Element.class)) {
+            final com.leansoft.nano.annotation.Element elementAnnotation = es.getField().getAnnotation(com.leansoft.nano.annotation.Element.class);
+            namespace = StringUtil.isEmpty(elementAnnotation.namespace()) ? namespace : elementAnnotation.namespace();
+        }
+        
         serializer.startTag(namespace, xmlName);
         if (!source.getClass().equals(type)) {
             MappingSchema ms = MappingSchema.fromObject(source);

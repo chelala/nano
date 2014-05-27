@@ -294,10 +294,12 @@ public class XmlDOMReader implements IReader {
                         final String nodeValue = xsiTypeAttr.getNodeValue();
                         final String[] splittedNodeValue = nodeValue.split(":");
                         if (2 == splittedNodeValue.length) {
-                            // TODO: Handle this case. Check in value in [1] is
-                            // equals and check namespace in [0] is the one of
-                            // the PackageInfo annotated class of the same
-                            // package of the class to see
+                            if (splittedNodeValue[1].equals(typeAnnotation.name())) {
+                                // TODO: check namespace in [0] is the one of
+                                // the PackageInfo annotated class of the same
+                                // package of the class to see
+                                return class2See;
+                            } 
                         } else if (nodeValue.equals(typeAnnotation.name())) {
                             return class2See;
                         }
